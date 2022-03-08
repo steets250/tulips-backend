@@ -1,4 +1,6 @@
-const firebase = require("firebase");
+const { initializeApp } = require("firebase/app");
+const { getDatabase } = require("firebase/database");
+
 const firebaseConfig = {
     apiKey: process.env.APIKEY,
     authDomain: process.env.AUTHDOMAIN,
@@ -10,7 +12,9 @@ const firebaseConfig = {
     measurementId: process.env.MEASUREMENTID,
 };
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+console.log(firebaseConfig);
 
-module.exports = { firebaseApp, db }
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+module.exports = { db };
