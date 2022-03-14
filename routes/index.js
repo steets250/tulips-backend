@@ -1,6 +1,6 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler')
-const { Post, createNewPostAndPushToFirebase, getPostById, getPosts } = require('../Post');
+const { Post, pushToFirebase, getPostById, getPosts } = require('../Post');
 const router = express.Router();
 
 
@@ -25,7 +25,8 @@ router.post("/story", asyncHandler(async (req, res, next) => {
     }
 
     try {
-        const post = await createNewPostAndPushToFirebase(text, title);
+        const post = new Post(text, title);
+        await pushToFirebase(post);
         res.status(200).send(`Post successfully created with id ${post.id}`);
     } catch (e) {
         console.error(e);
@@ -34,11 +35,24 @@ router.post("/story", asyncHandler(async (req, res, next) => {
 }));
 
 router.post("/story/:uuid/report", asyncHandler(async (req, res, next) => {
-
+    console.log(`URGENT - Story report for ID ${req.params.uuid}`);
+    res.status(200).send("Thank you for your report. We will review this story. ")
 }));
 
 router.post("/story/:uuid/like", asyncHandler(async (req, res, next) => {
+    const post = await getPostById(req.params.uuid);
+    post.likes++;
+    await pushToFirebase(post);
+    res.status(200).json(post);
+}));
 
+router.post("/story/:uuid/unlike", asyncHandler(async (req, res, next) => {
+    const post = await getPostById(req.params.uuid);
+    if (post.likes > 0) {
+        post.likes--;
+    }
+    await pushToFirebase(post);
+    res.status(200).json(post);
 }));
 
 module.exports = router;

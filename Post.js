@@ -14,18 +14,21 @@ class Post {
         this.title = title; 
         this.likes = likes;
         this.id = id;
+        this.toJson = this.toJson.bind(this);
+    }
+
+    toJson() {
+        return {
+            text: this.text,
+            title: this.title,
+            likes: this.likes,
+            id: this.id
+        }
     }
 };
 
-const createNewPostAndPushToFirebase = async (text, title) => {
-    const post = new Post(text, title);
-    await set(ref(db, `posts/${post.id}`), {
-        text: post.text,
-        title: post.title,
-        likes: post.likes,
-        id: post.id
-    });            
-    return post;
+const pushToFirebase = async (post) => {
+    await set(ref(db, `posts/${post.id}`), post.toJson());
 };
 
 const getPostById = async (id) => {
@@ -67,7 +70,7 @@ const getPosts = async () => {
 
 module.exports = {
     Post,
-    createNewPostAndPushToFirebase,
+    pushToFirebase,
     getPostById,
     getPosts
 };
