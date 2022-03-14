@@ -47,7 +47,7 @@ router.post("/story/:uuid/report", asyncHandler(async (req, res, next) => {
         });
         console.log(`Email successfully sent for post ${postId}`);
     }
-    res.status(200).send("Thank you for your report. We will review this story. ")
+    res.status(200).send("Thank you for your report. The Tulips team will review this story. ")
 }));
 
 router.post("/story/:uuid/like", asyncHandler(async (req, res, next) => {
