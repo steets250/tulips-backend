@@ -14,10 +14,10 @@
     "express": "^4.17.3",
     "express-async-handler": "^1.2.0",
     "firebase": "^9.6.8",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "uuidv4": "^6.2.12"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15",
-    "uuidv4": "^6.2.12"
+    "nodemon": "^2.0.15"
   }
 }
