@@ -1,6 +1,7 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler')
 const { Post, pushToFirebase, getPostById, getPosts } = require('../Post');
+const { sendEmail } = require('../EmailService');
 const router = express.Router();
 
 
@@ -35,7 +36,17 @@ router.post("/story", asyncHandler(async (req, res, next) => {
 }));
 
 router.post("/story/:uuid/report", asyncHandler(async (req, res, next) => {
-    console.log(`URGENT - Story report for ID ${req.params.uuid}`);
+    const postId = req.params.uuid;
+    console.log(`URGENT - Story report for ID ${postId}`);
+    if (process.env.ALLOWEMAILS) {
+        console.log(`Attempting to send email for post ${postId}`);
+        const post = await getPostById(postId);
+        await sendEmail({
+            subject: `Tulips - Post Reported`,
+            text: `Post ${postId} has been reported. \n\n${post.title}\n${post.text}`
+        });
+        console.log(`Email successfully sent for post ${postId}`);
+    }
     res.status(200).send("Thank you for your report. We will review this story. ")
 }));
 
