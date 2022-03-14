@@ -38,7 +38,7 @@ router.post("/story", asyncHandler(async (req, res, next) => {
 router.post("/story/:uuid/report", asyncHandler(async (req, res, next) => {
     const postId = req.params.uuid;
     console.log(`URGENT - Story report for ID ${postId}`);
-    if (process.env.ALLOWEMAILS) {
+    if (process.env.ALLOWEMAILS == "true") {
         console.log(`Attempting to send email for post ${postId}`);
         const post = await getPostById(postId);
         await sendEmail({
