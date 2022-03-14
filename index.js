@@ -12,10 +12,10 @@ app.use('/api', apiRouter);
 
 app.get('/', (req, res) => {
     res.status(200).send("OK");
-})
+});
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening to server at port ${process.env.PORT}`);
-})
+});
 
 module.exports = app;

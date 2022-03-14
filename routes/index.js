@@ -42,7 +42,7 @@ router.post("/story/:uuid/report", asyncHandler(async (req, res, next) => {
         console.log(`Attempting to send email for post ${postId}`);
         const post = await getPostById(postId);
         await sendEmail({
-            subject: `Tulips - Post Reported`,
+            subject: `Tulips: Post Reported. Title: "${post.title}"`,
             text: `Post ${postId} has been reported. \n\n${post.title}\n${post.text}`
         });
         console.log(`Email successfully sent for post ${postId}`);
